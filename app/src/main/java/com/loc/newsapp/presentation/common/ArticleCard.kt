@@ -1,6 +1,8 @@
 package com.loc.newsapp.presentation.common
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,7 +36,11 @@ import com.loc.newsapp.presentation.Dimens.ExtraSmallPadding
 import com.loc.newsapp.presentation.Dimens.ExtraSmallPadding2
 import com.loc.newsapp.presentation.Dimens.SmallIconSize
 import com.loc.newsapp.ui.theme.NewsAppTheme
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ArticleCard(
     modifier: Modifier = Modifier,
@@ -43,6 +49,10 @@ fun ArticleCard(
 ) {
 
     val context = LocalContext.current
+
+    val actualDate = OffsetDateTime.parse(article.publishedAt, DateTimeFormatter.ISO_DATE_TIME)
+    val formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy, HH:mm")
+    val formattedDate = actualDate.format(formatter)
 
     Row(modifier = modifier.clickable { onClick() }) {
 
@@ -86,7 +96,7 @@ fun ArticleCard(
                 )
                 Spacer(modifier = Modifier.width(ExtraSmallPadding2))
                 Text(
-                    text = article.publishedAt,
+                    text = formattedDate,
                     style = MaterialTheme.typography.labelMedium
                         .copy(fontWeight = FontWeight.Bold),
                     color = colorResource(id = R.color.body)
@@ -97,6 +107,7 @@ fun ArticleCard(
     }
 
 }
+
 
 @Preview(showBackground = true)
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)

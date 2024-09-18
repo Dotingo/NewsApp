@@ -81,7 +81,5 @@ fun HomeScreen(
                 navigateToDetails(it)
             }
         )
-
     }
-
 }

@@ -25,7 +25,8 @@ class SearchNewsPagingSource(
         return try {
             val newsResponse = api.searchNews(searchQuery = searchQuery, sources = sources, page = page)
             totalNewsCount += newsResponse.articles.size
-            val articles = newsResponse.articles.distinctBy { it.title } //Remove duplicates
+            val articles = newsResponse.articles.distinctBy { it.title }
+                .filterNot { it.title == "[Removed]" } //Remove duplicates
 
             LoadResult.Page(
                 data = articles,
